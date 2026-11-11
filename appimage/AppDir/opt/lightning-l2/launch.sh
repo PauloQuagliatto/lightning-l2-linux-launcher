@@ -58,19 +58,6 @@ export CLIENT_DIR
 client_patch_sync
 client_strip_anticheat
 
-# One-time per install, including prefixes set up by an older build.
-if [ ! -f "$INPUT_TWEAKS_MARKER" ]; then
-	log "Applying the camera/mouse fix to the prefix (one-time)..."
-	if prefix_input_tweaks; then
-		# The slot 3+ clones were copied before the fix, so they would
-		# still spin; dropping them makes each re-clone on next use.
-		rm -rf "$SLOTS_DIR"
-		touch "$INPUT_TWEAKS_MARKER"
-	else
-		log "Could not apply it - will retry on the next launch."
-	fi
-fi
-
 slot_adopt
 if ! slot_acquire; then
 	ui_error "$MAX_SLOTS Lightning-L2 clients are already running. Close one before starting another."
@@ -79,6 +66,15 @@ fi
 PREFIX=$(slot_prefix "$SLOT")
 VERB=$(slot_verb "$SLOT")
 log "Instance slot: $SLOT, prefix: $PREFIX, PROTON_VERB: $VERB"
+
+# Tune whichever prefix this launch resolved to, after slot_prefix has had
+# the chance to clone it: a slot 3+ clone is a prefix in its own right and
+# needs its own tuning. Keyed on per-prefix stamps, so it is a no-op once
+# applied and re-runs by itself when the input device list changes - which
+# is what picks up a newly plugged device. Non-fatal: the stamp is only
+# written on success, so a failure retries on the next launch rather than
+# blocking the game.
+prefix_tune "$PREFIX" || log "Could not tune the prefix - will retry on the next launch."
 
 # --- Launch ---
 # No WINEDLLOVERRIDES=d3d9=n, no DXVK copy, no StrictDrawOrdering, and no

@@ -62,11 +62,6 @@ INSTANCES_DIR="$INSTALL_DIR/proton-instances"
 LOG_DIR="$INSTALL_DIR/logs"
 
 MARKER="$INSTALL_DIR/.proton_setup_complete"
-# Prefixes created before the camera-spin fix existed need it applied
-# once, so it gets its own marker rather than a full prefix rebuild.
-# Numbered: bumping it re-runs the fix on prefixes that already got an
-# earlier version of it.
-INPUT_TWEAKS_MARKER="$INSTALL_DIR/.proton_input_tweaks2"
 SYSTEM_PATCH_VERSION_FILE="$INSTALL_DIR/.proton_system_patch_version"
 
 GAMEID="lightning-l2"
