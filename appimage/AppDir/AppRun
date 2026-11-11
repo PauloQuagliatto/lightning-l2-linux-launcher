@@ -1,0 +1,6 @@
+#!/bin/bash
+# AppImage entry point. $APPDIR is set by the runtime when mounted; the
+# readlink fallback covers running an extracted AppDir directly.
+HERE="$(dirname "$(readlink -f "$0")")"
+export APPDIR="${APPDIR:-$HERE}"
+exec "$APPDIR/opt/lightning-l2/launch.sh" "$@"

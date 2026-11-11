@@ -1,1 +1,6 @@
 *.deb
+plan.md
+*.AppImage
+appimage/AppDir/usr/
+appimage/AppDir/lightning-l2.png
+appimage/.build/
